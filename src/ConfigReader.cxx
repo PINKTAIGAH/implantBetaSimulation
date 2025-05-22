@@ -18,7 +18,7 @@ void ConfigReader::SetImplantationRate(const TEnv& env){
 }
 
 void ConfigReader::SetDecayHalflife(const TEnv& env){
-  implantationRate = env.GetValue("McSim.decayHalflife", 0.1);
+  decayHalflife = env.GetValue("McSim.decayHalflife", 0.1);
 }
 
 void ConfigReader::SetOnspillPeriod(const TEnv& env){
@@ -27,6 +27,22 @@ void ConfigReader::SetOnspillPeriod(const TEnv& env){
 
 void ConfigReader::SetOffspillPeriod(const TEnv& env){
   offspillPeriod = env.GetValue("McSim.offspillPeriod", 1.);
+}
+
+void ConfigReader::SetStartTime(const TEnv& env){
+  startTime = env.GetValue("McSim.startTime", 0.);
+}
+
+void ConfigReader::SetEndTime(const TEnv& env){
+  endTime = env.GetValue("McSim.endTime", 100.);
+}
+
+void ConfigReader::SetCorrelationWindow(const TEnv& env){
+  correlationWindow = env.GetValue("McSim.correlationWindow", 1.);
+}
+
+void ConfigReader::SetDebug(const TEnv& env){
+  debug = env.GetValue("McSim.debug", false);
 }
 
 // ####### PUBLIC #######
@@ -44,6 +60,10 @@ void ConfigReader::LoadConfig(const std::string configFile){
   SetDecayHalflife(env);
   SetOnspillPeriod(env);
   SetOffspillPeriod(env);
+  SetStartTime(env);
+  SetEndTime(env);
+  SetCorrelationWindow(env);
+  SetDebug(env);
 
 }
 
@@ -65,4 +85,20 @@ float ConfigReader::GetOnspillPeriod() const {
 
 float ConfigReader::GetOffspillPeriod() const {
   return offspillPeriod;
+}
+
+float ConfigReader::GetStartTime() const {
+  return startTime; 
+}
+
+float ConfigReader::GetEndTime() const {
+  return endTime; 
+}
+
+float ConfigReader::GetCorrelationWindow() const {
+  return correlationWindow; 
+}
+
+bool ConfigReader::GetDebug() const {
+  return debug; 
 }

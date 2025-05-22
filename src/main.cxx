@@ -8,17 +8,16 @@
 
 #include <iostream>
 #include "ConfigReader.hh"
+#include "utils.hh"
 
 int main(int argc, char* argv[]){
 
+  // Initialise config reader object and read the parameters
   ConfigReader reader;
   reader.LoadConfig("./config/parameters.conf");
   
-  std::cout << std::endl << "Segmentation: " << reader.GetDssdSegmentation().first << ", " << reader.GetDssdSegmentation().second << std::endl;
-  std::cout << "Implantation Rate: " << reader.GetImplantationRate() << std::endl;
-  std::cout << "Halflife: " << reader.GetDecayHalflife() << std::endl;
-  std::cout << "Onspill: " << reader.GetOnspillPeriod() << std::endl;
-  std::cout << "Offspill: " << reader.GetOffspillPeriod() << std::endl << std::endl;
+  // Print out the parameters used for the experiment
+  utils::printParametersToConsole(reader);
 
   return 0;
 }

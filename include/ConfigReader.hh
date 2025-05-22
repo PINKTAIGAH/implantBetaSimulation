@@ -20,6 +20,10 @@ class ConfigReader{
     float GetDecayHalflife() const;
     float GetOnspillPeriod() const;
     float GetOffspillPeriod() const;
+    float GetStartTime() const;
+    float GetEndTime() const;
+    float GetCorrelationWindow() const;
+    bool GetDebug() const;
     // ...
 
   private:
@@ -30,6 +34,11 @@ class ConfigReader{
     float decayHalflife;
     float onspillPeriod;
     float offspillPeriod;
+    float startTime;
+    float endTime;
+    float timestep;
+    float correlationWindow;
+    bool debug;
     // ...
 
     // Setters for each parameter passing TEnv as parameter
@@ -38,6 +47,10 @@ class ConfigReader{
     void SetDecayHalflife(const TEnv& env);
     void SetOnspillPeriod(const TEnv& env);
     void SetOffspillPeriod(const TEnv& env);
+    void SetStartTime(const TEnv& env);
+    void SetEndTime(const TEnv& env);
+    void SetCorrelationWindow(const TEnv& env);
+    void SetDebug(const TEnv& env);
     // ...
 
 };
