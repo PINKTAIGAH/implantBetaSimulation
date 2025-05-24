@@ -138,7 +138,7 @@ void IonBetaSimulation::SetDebugPreference(bool debug){
 void IonBetaSimulation::SimulateImplantEvents(int implantLimit){
 
   // Define local scope parameters
-  float currentTime = startTime;
+  double currentTime = startTime;
   float lastImplantTime = 0.;
   float nextImplantTime = -1.;
   float nextSpillChangeTime = onspillPeriod;
