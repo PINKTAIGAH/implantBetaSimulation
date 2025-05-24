@@ -4,6 +4,8 @@
 #include <utility>
 #include <tuple>
 
+// !!! IDEA !!!
+// Add a < operator in ImplantEvent struct so  sets are ordered by MCId
 struct ImplantEvent{
 
   std::pair<int, int> implantPosition; 

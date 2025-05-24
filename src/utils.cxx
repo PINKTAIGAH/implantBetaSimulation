@@ -1,6 +1,9 @@
-#include "utils.hh"
+#include <tuple>
 
-void utils::printParametersToConsole(ConfigReader& reader){
+#include "utils.hh"
+#include "ImplantEvent.hh"
+
+void utils::printParameters(ConfigReader& reader){
 
   const auto& implantPosChar = reader.GetImplantationPositionCharacteristics();
 
@@ -18,5 +21,21 @@ void utils::printParametersToConsole(ConfigReader& reader){
   std::cout << "Timestep: \t\t\t" << reader.GetTimestep() << std::endl;
   std::cout << "Correlation Window: \t\t" << reader.GetCorrelationWindow() << std::endl;
   std::cout << std::boolalpha << "Debug Mode: \t\t\t" << reader.GetDebug() << std::endl << std::endl;
+
+}
+
+void utils::printImplantEvent(ImplantEvent& implantEvent){
+
+  const auto& [implantPosition, decayPosition, implantTime, decayTime, MCTruthId] = implantEvent.GetEventParameters();
+
+  std::cout << "[DEBUG] Implant Event Generated ### MCTruthId: " << MCTruthId << " ### Imp. Pos.: (" << implantPosition.first << "," << implantPosition.second \
+    << ") ### Decay Pos.: (" << decayPosition.first << "," << decayPosition.second << ") ### Imp. Time: " << implantTime \
+    << " ### Decay Time: " << decayTime << std::endl;
+
+}
+
+void utils::printImplantDecayCorrelation(float& ionBetaTimediff){
+
+  std::cout << "[DEBUG] Implant Decay Correlated w/ dT = " << ionBetaTimediff << std::endl;
 
 }

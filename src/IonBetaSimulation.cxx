@@ -103,8 +103,8 @@ void IonBetaSimulation::SetPhysicsParameters(
   repetitionPeriod = onspillPeriod + offspillPeriod;
 
   // Define Random generators 
-  implantationTimeGenerator = ExponentialGenerator(1/implantationRate);
-  decayTimeGenerator = ExponentialGenerator(1/decayRate);
+  implantationTimeGenerator = ExponentialGenerator(implantationRate);
+  decayTimeGenerator = ExponentialGenerator(decayRate);
   implantationPosXGenerator = GaussianGenerator(implantationPositionCharacteristics[0], implantationPositionCharacteristics[2]);
   implantationPosYGenerator = GaussianGenerator(implantationPositionCharacteristics[1], implantationPositionCharacteristics[3]);
 
@@ -135,4 +135,57 @@ void IonBetaSimulation::SetDebugPreference(bool debug){
   this->debug = debug;
 }
 
+void IonBetaSimulation::SimulateImplantEvents(int implantLimit){
+
+  // Define local scope parameters
+  float currentTime = startTime;
+  float lastImplantTime = 0.;
+  float nextImplantTime = -1.;
+  float nextSpillChangeTime = onspillPeriod;
+  float lastDecayTime = 0.;
+  int MCId = 0;
+  SpillFlag spillFlag = SpillFlag::OFFSPILL;
+  ImplantEvent lastImplantEvent;
+  std::pair<int, int> lastImplantPosition;
+  std::pair<int, int> lastDecayRelativePosition;
+  std::pair<int, int> lastDecayPosition;
+
+  while( currentTime < endTime ){
+
+    if (implantLimit > 0 && MCId >= implantLimit ) break;
+
+    currentTime = currentTime + timestep; // Update time
+
+    // Create new implant event
+    if ( currentTime > nextImplantTime ){
+      // Update Implant parameters
+      ++MCId;
+      lastImplantTime = currentTime;
+      nextImplantTime = GetTimeOfImplant(currentTime);
+      lastDecayTime = GetTimeOfDecay(currentTime);
+      lastImplantPosition = GetPositionOfImplant();
+
+      // !!! IDEA !!!
+      // Fold the relativePosition -> AbsolutePosition calc. for decays in the GetPosition() method
+      lastDecayRelativePosition = GetPositionOfDecay();
+      lastDecayPosition = std::make_pair(lastImplantPosition.first + lastDecayRelativePosition.first, lastImplantPosition.second + lastDecayRelativePosition.second);
+
+      // Create ImplantEvent and store it.
+      lastImplantEvent.SetEventParameters(lastImplantPosition, lastDecayPosition, lastImplantTime, lastDecayTime, MCId);
+      implantEventVector.emplace_back(lastImplantEvent);
+
+      if (debug) utils::printImplantEvent(lastImplantEvent); // Print out Event
+
+      // Change spill flag if needed
+      if (currentTime > nextSpillChangeTime) {
+        std::pair<float, SpillFlag> methodOut = FlipSpillFlag(currentTime, nextSpillChangeTime, spillFlag);
+        nextSpillChangeTime = methodOut.first;
+        spillFlag = methodOut.second;
+      }
+
+    }
+
+  }
+
+}
 

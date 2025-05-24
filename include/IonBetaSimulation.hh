@@ -67,6 +67,9 @@ class IonBetaSimulation{
     float endTime;
     float timestep;
     float correlationWindow;
+
+    // !!! IDEA !!!
+    // Instead of a vector, have this be a set & add a < operator in ImplantEvent structso it's ordered by MCId
     std::vector<ImplantEvent> implantEventVector; // Not defined in config
     std::vector<float> implantDecayTimedifferencesVector; // Not defined in config
 

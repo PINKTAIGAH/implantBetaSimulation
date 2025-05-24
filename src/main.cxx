@@ -18,7 +18,7 @@ int main(int argc, char* argv[]){
   reader.LoadConfig("./config/parameters.conf");
   
   // Print out the parameters used for the experiment
-  if ( reader.GetDebug() ) utils::printParametersToConsole(reader);
+  utils::printParameters(reader);
 
   // Initialise simulator and set parameters
   IonBetaSimulation simulator;
@@ -39,6 +39,11 @@ int main(int argc, char* argv[]){
     reader.GetTimestep(),
     reader.GetCorrelationWindow()
   );
+
+  // Simulate Implants & Decays
+  simulator.SimulateImplantEvents();
+
+  std::cout << "Simulation has run succesfully. Goodbye!" << std::endl << std::endl;
 
 
   return 0;

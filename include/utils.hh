@@ -3,10 +3,13 @@
 
 #include <iostream>
 #include "ConfigReader.hh"
+#include "ImplantEvent.hh"
 
 namespace utils{
     
-    void printParametersToConsole(ConfigReader& reader);
+    void printParameters(ConfigReader& reader);
+    void printImplantEvent(ImplantEvent& implantEvent);
+    void printImplantDecayCorrelation(float& ionBetaTimediff);
 
 }
 
