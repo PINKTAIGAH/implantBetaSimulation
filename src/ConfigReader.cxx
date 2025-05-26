@@ -10,41 +10,45 @@ ConfigReader::ConfigReader(){}
 // Setters
 
 void ConfigReader::SetDssdSegmentation(const TEnv& env){
-  int xSegmentation = env.GetValue("MCSim.xSegmentation", 1);
-  int ySegmentation = env.GetValue("MCSim.ySegmentation", 1);
+  int xSegmentation = env.GetValue("Detector.xSegmentation", 1);
+  int ySegmentation = env.GetValue("Detector.ySegmentation", 1);
   dssdSegmentation = std::make_pair(xSegmentation, ySegmentation);
 }
 
+void ConfigReader::SetBetaEfficiency(const TEnv& env){
+  betaEfficiency = env.GetValue("Detector.betaEfficiency", 1.);
+}
+
+void ConfigReader::SetNoiseRate(const TEnv& env){
+  noiseRate = env.GetValue("Detector.noiseRate", 0.1);
+}
+
 void ConfigReader::SetImplantationPositionCharacteristics(const TEnv& env){
-  float implantCentroidX = env.GetValue("MCSim.implantCentroidX", 1.);
-  float implantCentroidY = env.GetValue("MCSim.implantCentroidY", 1.);
-  float implantStdErrorX = env.GetValue("MCSim.implantStdErrorX", 0.);
-  float implantStdErrorY = env.GetValue("MCSim.implantStdErrorY", 0.);
+  float implantCentroidX = env.GetValue("Implant.centroidX", 1.);
+  float implantCentroidY = env.GetValue("Implant.centroidY", 1.);
+  float implantStdErrorX = env.GetValue("Implant.stdErrorX", 0.);
+  float implantStdErrorY = env.GetValue("Implant.stdErrorY", 0.);
   implantationPositionCharacteristics = {implantCentroidX, implantCentroidY, implantStdErrorX, implantStdErrorY};
 }
 
-void ConfigReader::SetDecayNearestNeighbours(const TEnv& env){
-  decayNearestNeighbours = env.GetValue("MCSim.decayNearestNeighbours", 1);
+void ConfigReader::SetImplantationRate(const TEnv& env){
+  implantationRate = env.GetValue("Implant.rate", 0.1);
 }
 
-void ConfigReader::SetImplantationRate(const TEnv& env){
-  implantationRate = env.GetValue("MCSim.implantationRate", 0.1);
+void ConfigReader::SetDecayNearestNeighbours(const TEnv& env){
+  decayNearestNeighbours = env.GetValue("Decay.nearestNeighbours", 1);
 }
 
 void ConfigReader::SetDecayHalflife(const TEnv& env){
-  decayHalflife = env.GetValue("MCSim.decayHalflife", 0.1);
-}
-
-void ConfigReader::SetBetaEfficiency(const TEnv& env){
-  betaEfficiency = env.GetValue("MCSim.betaEfficiency", 1.);
+  decayHalflife = env.GetValue("Decay.halflife", 0.1);
 }
 
 void ConfigReader::SetOnspillPeriod(const TEnv& env){
-  onspillPeriod = env.GetValue("MCSim.onspillPeriod", 1.);
+  onspillPeriod = env.GetValue("Beam.onspillPeriod", 1.);
 }
 
 void ConfigReader::SetOffspillPeriod(const TEnv& env){
-  offspillPeriod = env.GetValue("MCSim.offspillPeriod", 1.);
+  offspillPeriod = env.GetValue("Beam.offspillPeriod", 1.);
 }
 
 void ConfigReader::SetStartTime(const TEnv& env){
@@ -79,6 +83,7 @@ void ConfigReader::LoadConfig(const std::string configFile){
   // Read and assign each parameter
   SetDssdSegmentation(env);
   SetImplantationPositionCharacteristics(env);
+  SetNoiseRate(env);
   SetDecayNearestNeighbours(env);
   SetImplantationRate(env);
   SetDecayHalflife(env);
@@ -101,6 +106,10 @@ std::pair<int, int> ConfigReader::GetDssdSegmentation() const {
 
 std::array<float, 4> ConfigReader::GetImplantationPositionCharacteristics() const {
   return implantationPositionCharacteristics;
+}
+
+float ConfigReader::GetNoiseRate() const {
+  return noiseRate;
 }
 
 int ConfigReader::GetDecayNearestNeighbours() const {

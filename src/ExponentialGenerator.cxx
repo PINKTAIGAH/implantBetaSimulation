@@ -15,7 +15,3 @@ void ExponentialGenerator::SetLambda(float lambda){
 float ExponentialGenerator::Generate(){
   return exponentialDistribution(randomGenerator);
 }
-
-
-
-

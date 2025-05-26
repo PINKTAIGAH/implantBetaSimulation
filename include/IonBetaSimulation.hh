@@ -42,7 +42,8 @@ class IonBetaSimulation{
 
     // Parameter Getters
     std::vector<ImplantEvent> GetImplantEvents() const; 
-    std::vector<float> GetImplantDecayCorrelations() const; 
+    std::vector<float> GetImplantDecayCorrelationsAll() const; 
+    std::vector<float> GetImplantDecayCorrelationsFirstMatch() const; 
 
     // Simulation Calls
     void SimulateImplantEvents(int implantLimit=-1);

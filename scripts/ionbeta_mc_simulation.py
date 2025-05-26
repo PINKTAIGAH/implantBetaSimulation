@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 #parameters:
 decayrate = 1/10 #Hz
-implantrate = 50 #Hz
+implantrate = 1 #Hz
 debug_mode = False
 
 tstart = 0
-tend = 100000
+tend = 40000
 dt = 1e-3 #
 timestep_array = np.arange(tstart, tend, dt)
 

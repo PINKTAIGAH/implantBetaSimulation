@@ -9,6 +9,7 @@ void utils::printParameters(ConfigReader& reader){
 
   std::cout << std::endl << "##### Parameters used for simulation ##### " << std::endl;
   std::cout << "Segmentation: \t\t\t" << reader.GetDssdSegmentation().first << ", " << reader.GetDssdSegmentation().second << std::endl;
+  std::cout << "Noise Rate: \t\t\t" << reader.GetNoiseRate() << std::endl;
   std::cout << "Implantation Pos.:\t\t" << implantPosChar[0] << ", " << implantPosChar[1] << ", " << implantPosChar[2] << ", " << implantPosChar[3] << std::endl;
   std::cout << "Decay Nearest Neighbour: \t" << reader.GetDecayNearestNeighbours() << std::endl;
   std::cout << "Implantation Rate: \t\t" << reader.GetImplantationRate() << std::endl;

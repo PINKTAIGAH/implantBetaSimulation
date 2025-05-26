@@ -7,9 +7,9 @@
 \********************************************************************************/
 
 #include <iostream>
-#include "ConfigReader.hh"
-#include "IonBetaSimulation.hh"
-#include "utils.hh"
+#include <ConfigReader.hh>
+#include <IonBetaSimulation.hh>
+#include <utils.hh>
 
 int main(int argc, char* argv[]){
 

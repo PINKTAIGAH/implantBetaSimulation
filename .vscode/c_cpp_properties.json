@@ -1,18 +1,17 @@
 {
   "configurations": [
     {
-      "name": "Linux",
+      "name": "macos",
       "includePath": [
-        "${workspaceFolder}/include",
-        "/opt/homebrew/Cellar/root/6.34.08_1/include",
-        "/User/grorgio/Projects/implantBetaSimulation/include"
+        "${workspaceFolder}/**",
+        "/Users/giorgio/Projects/implantBetaSimulation/include",
+        "/opt/homebrew/include/root"
       ],
       "defines": [],
       "compilerPath": "/usr/bin/g++",
       "cStandard": "c17",
       "cppStandard": "c++17",
-      "intelliSenseMode": "linux-gcc-x64",
-      "compileCommands": "${workspaceFolder}/compile_commands.json"
+      "intelliSenseMode": "macos-gcc-arm64"
     }
   ],
   "version": 4

@@ -18,6 +18,7 @@ class ConfigReader{
     // Getters for parameters in config
     std::pair<int, int> GetDssdSegmentation() const;
     std::array<float, 4> GetImplantationPositionCharacteristics() const;
+    float GetNoiseRate() const;
     int GetDecayNearestNeighbours() const;
     float GetImplantationRate() const;
     float GetDecayHalflife() const;
@@ -36,6 +37,7 @@ class ConfigReader{
     // internal parameters for config values
     std::pair<int, int> dssdSegmentation;
     std::array<float, 4> implantationPositionCharacteristics;
+    float noiseRate;
     int decayNearestNeighbours;
     float implantationRate;
     float decayHalflife;
@@ -52,6 +54,7 @@ class ConfigReader{
     // Setters for each parameter passing TEnv as parameter
     void SetDssdSegmentation(const TEnv& env);
     void SetImplantationPositionCharacteristics(const TEnv& env);
+    void SetNoiseRate(const TEnv& env);
     void SetDecayNearestNeighbours(const TEnv& env);
     void SetImplantationRate(const TEnv& env);
     void SetDecayHalflife(const TEnv& env);
