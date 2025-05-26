@@ -15,6 +15,7 @@
 #include "DiscreteGenerator.hh"
 #include "BetaPositionGenerator.hh"
 #include "UniformGenerator.hh"
+#include "TimeRangeManagerLocal.hh"
 
 
 // DEFINE GLOBAL SPILLFLAGS
@@ -106,6 +107,10 @@ class IonBetaSimulation{
     GaussianGenerator implantationPosYGenerator; // Not defined in config
     BetaPositionGenerator decayPosGenerator; // Not defined in config
     UniformGenerator betaEffiencyGenerator; // Not defined in config
+
+    // Timerange manager
+    double deadtimeWindow = 350e-6;
+    TimeRangeManagerLocal deadtimeManager; // Position Range of 5
 
     // Private Class Methods
     std::pair<float, float> GetPositionOfImplant();

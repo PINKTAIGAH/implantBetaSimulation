@@ -51,14 +51,14 @@ void utils::printNoiseEvent(DecayEvent& noiseEvent){
 void utils::printImplantDecayCorrelation(MatchedDecayEvent& matchedDecayEvent, int& implantMCId, std::string& correlationType, std::string& decayType){
 
   std::cout << "[DEBUG] DECAY EVENT CORRELATED ### Corr. Type: " << correlationType << " ### Decay Type: " << decayType << " ### Decay Time: " \
-    << matchedDecayEvent.decayTime << " ### Match Order: " << matchedDecayEvent.matchOrder << "### MC_ID: " << matchedDecayEvent.MCTruthId << " (" \
+    << matchedDecayEvent.decayTime << " ### Match Order: " << matchedDecayEvent.matchOrder << " ### MC_ID: " << matchedDecayEvent.MCTruthId << " (" \
     << implantMCId << ")" << std::endl; 
 
 }
 
-void utils::printMatchedImplantParameters(MatchedImplantEvent& matchedImplantEvent){
+void utils::printMatchedImplantSummary(MatchedImplantEvent& matchedImplantEvent){
 
-  std::cout << "[DEBUG] IMPLANT EVENT CORRELATED ### Fwd. Multiplicity: " << matchedImplantEvent.matchedDecayMultiplicity.first << " ### Bkw Multiplicity: " \
+  std::cout << "[DEBUG] IMPLANT EVENT SUMMARY ### Fwd. Multiplicity: " << matchedImplantEvent.matchedDecayMultiplicity.first << " ### Bkw Multiplicity: " \
     << matchedImplantEvent.matchedDecayMultiplicity.second << std::endl;
 
 }

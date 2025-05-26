@@ -93,7 +93,7 @@ std::pair<float, SpillFlag> IonBetaSimulation::FlipSpillFlag(float currentTime, 
 }
 
 bool IonBetaSimulation::IsDecayDetected(){
-  return betaEffiencyGenerator.Generate() < betaEfficiency;
+  return betaEffiencyGenerator.Generate() <= betaEfficiency;
 }
 
 void IonBetaSimulation::MergeBetasAndNoiseEvents(){
@@ -216,6 +216,9 @@ void IonBetaSimulation::SimulateImplantEvents(int implantLimit){
       lastBetaTime = GetTimeOfDecay(currentTime);
       lastImplantPosition = GetPositionOfImplant();
 
+      // Log implant in timerange manager
+      deadtimeManager.addRange(currentTime, currentTime+deadtimeWindow, lastImplantPosition.first, lastImplantPosition.second);
+
       // !!! IDEA !!!
       // Fold the relativePosition -> AbsolutePosition calc. for decays in the GetPosition() method
       lastBetaRelativePosition = GetPositionOfDecay();
@@ -291,6 +294,9 @@ void IonBetaSimulation::CorrelateImplantDecays(){
       // Unpack all decay parameters
       DecayEvent decayEvt = decayItr->second;
       auto& [decayType, decayPosition, decayTime, decayMCId] = decayEvt;
+
+      // Veto decay event if inside of implant deadtime
+      if ( deadtimeManager.contains(decayTime, decayPosition.first, decayPosition.second) ) continue;
       
       // Check if decay event occures within position threshold (1 nearest neighbour) from implant
       if ( std::abs(decayPosition.first - implantPosition.first) <= 1 && std::abs(decayPosition.second - implantPosition.second) <= 1 ){
@@ -303,7 +309,7 @@ void IonBetaSimulation::CorrelateImplantDecays(){
 
         // Add Match to vector
         float timediff = decayTime-implantTime;
-        if (forwardMatchCounter == 1) ; implantDecayTimediffFirstVector.emplace_back(timediff); // Add to first match vector
+        if (forwardMatchCounter == 1) implantDecayTimediffFirstVector.emplace_back(timediff); // Add to first match vector
         implantDecayTimediffAllVector.emplace_back(timediff); // Add to all match vector
 
         if (debug) {
@@ -327,6 +333,8 @@ void IonBetaSimulation::CorrelateImplantDecays(){
       // Unpack all decay parameters
       DecayEvent decayEvt = decayRItr->second;
       auto& [decayType, decayPosition, decayTime, decayMCId] = decayEvt;
+
+      // IDEA!!! Do we add deadtimeManager veto here too? (Prob not as no decay rate increase influenced by imps in backwards direction)
       
       // Check if decay event occures within position threshold (1 nearest neighbour) from implant
       if ( std::abs(decayPosition.first - implantPosition.first) <= 1 && std::abs(decayPosition.second - implantPosition.second) <= 1 ){
@@ -339,7 +347,7 @@ void IonBetaSimulation::CorrelateImplantDecays(){
 
         // Add Match to map
         float timediff = decayTime-implantTime;
-        if (backwardMatchCounter == 1) ; implantDecayTimediffFirstVector.emplace_back(timediff); // Add to first match vector
+        if (backwardMatchCounter == 1) implantDecayTimediffFirstVector.emplace_back(timediff); // Add to first match vector
         implantDecayTimediffAllVector.emplace_back(timediff); // Add to all match vector
 
         if (debug) {
@@ -359,7 +367,7 @@ void IonBetaSimulation::CorrelateImplantDecays(){
 
     matchedEventVector.emplace_back(matchedImplantEvent);
 
-    if (debug) utils::printMatchedImplantParameters(matchedImplantEvent);
+    if (debug) utils::printMatchedImplantSummary(matchedImplantEvent);
 
   }
 

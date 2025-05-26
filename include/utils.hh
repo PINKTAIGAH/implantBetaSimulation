@@ -16,7 +16,7 @@ namespace utils{
     void printImplantEvent(ImplantEvent& implantEvent, DecayEvent& DecayEvent);
     void printNoiseEvent(DecayEvent& noiseEvent);
     void printImplantDecayCorrelation(MatchedDecayEvent& matchedDecayEvent, int& implantMCId, std::string& correlationType, std::string& decayType);
-    void printMatchedImplantParameters(MatchedImplantEvent& matchedImplantEvent);
+    void printMatchedImplantSummary(MatchedImplantEvent& matchedImplantEvent);
 
 }
 

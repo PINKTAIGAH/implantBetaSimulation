@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
 
   std::cout << std::endl << "Correlated events succesfully!" << std::endl;
 
-  std::cout << "Program has run succesfully. Goodbye!" << std::endl << std::endl;
+  std::cout << std::endl << "Program has run succesfully. Goodbye!" << std::endl << std::endl;
 
   return 0;
 }
