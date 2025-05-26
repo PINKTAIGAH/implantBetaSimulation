@@ -1,15 +1,20 @@
 #ifndef ION_BETA_SIMULATION_H
 #define ION_BETA_SIMULATION_H
 
+#include <map>
 #include <array>
 #include <utility>
 #include <vector>
 
 #include "utils.hh"
 #include "ImplantEvent.hh"
+#include "DecayEvent.hh"
+#include "MatchedEvent.hh"
 #include "ExponentialGenerator.hh"
 #include "GaussianGenerator.hh"
 #include "DiscreteGenerator.hh"
+#include "BetaPositionGenerator.hh"
+#include "UniformGenerator.hh"
 
 
 // DEFINE GLOBAL SPILLFLAGS
@@ -25,6 +30,7 @@ class IonBetaSimulation{
     void SetPhysicsParameters(
       std::pair<int, int> dssdSegmentation,
       std::array<float, 4> implantataionPositionCharacteristics, 
+      float noiseRate,
       int decayNearestNeighbours,
       float implantationRate, 
       float decayHalflife, 
@@ -40,14 +46,13 @@ class IonBetaSimulation{
     );
     void SetDebugPreference(bool debug);
 
-    // Parameter Getters
-    std::vector<ImplantEvent> GetImplantEvents() const; 
-    std::vector<float> GetImplantDecayCorrelationsAll() const; 
-    std::vector<float> GetImplantDecayCorrelationsFirstMatch() const; 
-
     // Simulation Calls
     void SimulateImplantEvents(int implantLimit=-1);
-    void CorrelateImplantDecays(bool firstMatch=false);
+    void CorrelateImplantDecays();
+
+    std::vector<MatchedImplantEvent> GetMatchedEventVector() const;
+    std::vector<float> GetImplantDecayTimediffAll() const;
+    std::vector<float> GetImplantDecayTimediffFirst() const;
 
   private:
 
@@ -55,6 +60,7 @@ class IonBetaSimulation{
     std::pair<int, int> dssdSegmentation;
     std::array<float, 4> implantationPositionCharacteristics;
     int decayNearestNeighbours;
+    float noiseRate;
     float implantationRate;
     float decayHalflife;
     float betaEfficiency;
@@ -69,10 +75,15 @@ class IonBetaSimulation{
     float timestep;
     float correlationWindow;
 
-    // !!! IDEA !!!
-    // Instead of a vector, have this be a set & add a < operator in ImplantEvent structso it's ordered by MCId
-    std::vector<ImplantEvent> implantEventVector; // Not defined in config
-    std::vector<float> implantDecayTimedifferencesVector; // Not defined in config
+    std::map<float, ImplantEvent> implantEventMap; // Not defined in config
+    std::map<float, DecayEvent> noiseEventMap; // Not defined in config
+    std::map<float, DecayEvent> betaEventMap; // Not defined in config
+    // This map contains: EFFICENCY CORRECTED BETA + NOISE DECAY EVENTS 
+    std::map<float, DecayEvent> efficiencyCorrectedDecayEventMap; // Not definded in config
+
+    std::vector<MatchedImplantEvent> matchedEventVector;
+    std::vector<float> implantDecayTimediffAllVector;
+    std::vector<float> implantDecayTimediffFirstVector;
 
     // Debug flag
     bool debug;
@@ -88,17 +99,26 @@ class IonBetaSimulation{
     // Random 
     ExponentialGenerator implantationTimeGenerator; // Not defined in config
     ExponentialGenerator decayTimeGenerator; // Not defined in config
+    ExponentialGenerator noiseTimeGenerator; // Not defined in config
+    DiscreteGenerator noisePosXGenerator; // Not defined in config
+    DiscreteGenerator noisePosYGenerator; // Not defined in config
     GaussianGenerator implantationPosXGenerator; // Not defined in config
     GaussianGenerator implantationPosYGenerator; // Not defined in config
-    DiscreteGenerator decayPosGenerator; // Not defined in config
+    BetaPositionGenerator decayPosGenerator; // Not defined in config
+    UniformGenerator betaEffiencyGenerator; // Not defined in config
 
     // Private Class Methods
     std::pair<float, float> GetPositionOfImplant();
     std::pair<float, float> GetPositionOfDecay();
+    std::pair<float, float> GetPositionOfNoise();
     float GetTimeOfImplant(float currentTime);
     float GetTimeOfDecay(float implantTime);
+    float GetTimeOfNoise(float currentTime);
     bool IsOnspill(float currentTime);
+    bool IsDecayDetected();
+    void MergeBetasAndNoiseEvents();
     std::pair<float, SpillFlag> FlipSpillFlag(float currentTime, float nextSpillChangeTime, SpillFlag spillFlag);
+
 
 };
 

@@ -9,22 +9,18 @@
 struct ImplantEvent{
 
   std::pair<int, int> implantPosition; 
-  std::pair<int, int> decayPosition; 
   float implantTime;
-  float decayTime; 
   int MCTruthId;
 
   // Setters
   void SetEventParameters(
     std::pair<int, int> implantPosition, 
-    std::pair<int, int> decayPosition,
     float implantTime,
-    float decayTime,
     int MCTruthId
   );
 
   // Getters
-  std::tuple<std::pair<int, int>, std::pair<int, int>, float, float, int> GetEventParameters() const;
+  std::tuple<std::pair<int, int>, float, int> GetEventParameters() const;
 
 };
 

@@ -2,22 +2,17 @@
 
 #include "DiscreteGenerator.hh"
 
-DiscreteGenerator::DiscreteGenerator() 
-    : randomDevice(), randomGenerator(randomDevice()), discreteDistribution(0, 2) {}
 
-float DiscreteGenerator::Generate(){
+DiscreteGenerator::DiscreteGenerator(int lowerBound, int upperBound) 
+    : randomGenerator(std::random_device{}()), discreteDistribution(lowerBound, upperBound) {}
 
-  int randomInt = discreteDistribution(randomGenerator);
 
-  switch (randomInt){
-    case 0: return -1;
-    case 1: return 0;
-    case 2: return 1;
-  }
-  return 0; // As a failsafe
+void DiscreteGenerator::SetRange(int lowerBound, int upperBound){
+
+  discreteDistribution.param(std::uniform_int_distribution<>::param_type(lowerBound,upperBound));
 
 }
 
-
-
-
+int DiscreteGenerator::Generate(){
+  return discreteDistribution(randomGenerator);
+}

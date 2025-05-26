@@ -26,6 +26,7 @@ int main(int argc, char* argv[]){
   simulator.SetPhysicsParameters(
     reader.GetDssdSegmentation(),
     reader.GetImplantationPositionCharacteristics(),
+    reader.GetNoiseRate(),
     reader.GetDecayNearestNeighbours(),
     reader.GetImplantationRate(),
     reader.GetDecayHalflife(),
@@ -43,8 +44,14 @@ int main(int argc, char* argv[]){
   // Simulate Implants & Decays
   simulator.SimulateImplantEvents();
 
-  std::cout << "Simulation has run succesfully. Goodbye!" << std::endl << std::endl;
+  std::cout << std::endl << "Simulated events succesfully!" << std::endl;
 
+  // Correlate Implants & Decays
+  simulator.CorrelateImplantDecays();
+
+  std::cout << std::endl << "Correlated events succesfully!" << std::endl;
+
+  std::cout << "Program has run succesfully. Goodbye!" << std::endl << std::endl;
 
   return 0;
 }

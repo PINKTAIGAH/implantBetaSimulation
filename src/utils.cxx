@@ -1,7 +1,10 @@
 #include <tuple>
+#include <string>
 
 #include "utils.hh"
 #include "ImplantEvent.hh"
+#include "MatchedEvent.hh"
+#include "IonBetaSimulation.hh"
 
 void utils::printParameters(ConfigReader& reader){
 
@@ -25,18 +28,37 @@ void utils::printParameters(ConfigReader& reader){
 
 }
 
-void utils::printImplantEvent(ImplantEvent& implantEvent){
+void utils::printImplantEvent(ImplantEvent& implantEvent, DecayEvent& decayEvent){
 
-  const auto& [implantPosition, decayPosition, implantTime, decayTime, MCTruthId] = implantEvent.GetEventParameters();
+  const auto& [implantPosition, implantTime, implantMCTruthId] = implantEvent.GetEventParameters();
+  const auto& [decayType, decayPosition, decayTime, decayMCTruthId] = decayEvent.GetEventParameters();
 
-  std::cout << "[DEBUG] Implant Event Generated ### MCTruthId: " << MCTruthId << " ### Imp. Pos.: (" << implantPosition.first << "," << implantPosition.second \
+  std::cout << "[DEBUG] IMPLANT EVENT GENERATED ### MCTruthId: " << implantMCTruthId << " (" << decayMCTruthId << ") ### Imp. Pos.: (" << implantPosition.first << "," << implantPosition.second \
     << ") ### Decay Pos.: (" << decayPosition.first << "," << decayPosition.second << ") ### Imp. Time: " << implantTime \
     << " ### Decay Time: " << decayTime << std::endl;
 
 }
 
-void utils::printImplantDecayCorrelation(float& ionBetaTimediff){
+void utils::printNoiseEvent(DecayEvent& noiseEvent){
 
-  std::cout << "[DEBUG] Implant Decay Correlated w/ dT = " << ionBetaTimediff << std::endl;
+  const auto& [noiseType, noisePosition, noiseTime, noiseMCTruthId] = noiseEvent.GetEventParameters();
+
+  std::cout << "[DEBUG] NOISE EVENT GENERATED ### MCTruthId: " << noiseMCTruthId << " ### Noise Pos.: (" << noisePosition.first << "," << noisePosition.second << \
+    ") ### Noise Time: " << noiseTime << std::endl;
+
+}
+
+void utils::printImplantDecayCorrelation(MatchedDecayEvent& matchedDecayEvent, int& implantMCId, std::string& correlationType, std::string& decayType){
+
+  std::cout << "[DEBUG] DECAY EVENT CORRELATED ### Corr. Type: " << correlationType << " ### Decay Type: " << decayType << " ### Decay Time: " \
+    << matchedDecayEvent.decayTime << " ### Match Order: " << matchedDecayEvent.matchOrder << "### MC_ID: " << matchedDecayEvent.MCTruthId << " (" \
+    << implantMCId << ")" << std::endl; 
+
+}
+
+void utils::printMatchedImplantParameters(MatchedImplantEvent& matchedImplantEvent){
+
+  std::cout << "[DEBUG] IMPLANT EVENT CORRELATED ### Fwd. Multiplicity: " << matchedImplantEvent.matchedDecayMultiplicity.first << " ### Bkw Multiplicity: " \
+    << matchedImplantEvent.matchedDecayMultiplicity.second << std::endl;
 
 }

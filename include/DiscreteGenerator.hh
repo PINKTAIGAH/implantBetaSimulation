@@ -7,13 +7,14 @@ class DiscreteGenerator{
 
   public:
 
-    explicit DiscreteGenerator();
+    explicit DiscreteGenerator(int lowerBound=0, int upperBound=1);
 
-    float Generate();
+    void SetRange(int lowerBound, int upperBound );
+
+    int Generate();
 
   private:
 
-    std::random_device randomDevice;
     std::mt19937 randomGenerator;
     std::uniform_int_distribution<> discreteDistribution;
 
